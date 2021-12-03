@@ -1,0 +1,16 @@
+.vscode
+Materials
+Prefabs
+Scenes
+Sounds
+Sprites
+TextMesh Pro
+*.meta
+Library
+Logs
+Packages
+ProjectSettings
+Temp
+UserSettings
+Assembly-CSharp.*
+[object Object].*
