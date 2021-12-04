@@ -1,4 +1,6 @@
-# DEV-06,
-#### Tags: []
+# DEV-06, Creating our Quads
+#### Tags: [quads]
 
-![](../images/DEV-06/DEV-06-A.png)
+    Check script changes in github
+    
+    We are merging our 6 quads meshes into one mesh with no duplicate vertices and normals

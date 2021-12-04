@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Quad
 {
+    public Mesh mesh;
 
-    public Mesh Build(Block.BlockSide side, Vector3 offset)
+    public Quad(Block.BlockSide side, Vector3 offset)
     {
-        Mesh mesh;
         mesh = new Mesh();
         mesh.name = "ScriptedQuad";
         mesh = GetFace(side, mesh, offset);
         mesh.RecalculateBounds();
-        return mesh;
     }
 
     private Mesh GetFace(Block.BlockSide side, Mesh mesh, Vector3 offset){        
