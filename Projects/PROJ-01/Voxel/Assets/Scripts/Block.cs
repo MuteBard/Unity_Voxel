@@ -12,18 +12,23 @@ public class Block : MonoBehaviour
         FRONT,
         BACK
     }
+    [SerializeField] Material atlas;
+    [SerializeField] MeshUtils.BlockType blockType;
     void Start()
     {
         MeshFilter mf = this.gameObject.AddComponent<MeshFilter>();
         MeshRenderer mr = this.gameObject.AddComponent<MeshRenderer>();
+        mr.material = atlas;
+
+        Vector2 blockUVData = MeshUtils.GetblockUVData(blockType);
 
         Quad[] quads = new Quad[6];
-        quads[0] = new Quad(BlockSide.BOTTOM, new Vector3(0,0,0));
-        quads[1] = new Quad(BlockSide.TOP, new Vector3(0,0,0));
-        quads[2] = new Quad(BlockSide.LEFT, new Vector3(0,0,0));
-        quads[3] = new Quad(BlockSide.RIGHT, new Vector3(0,0,0));
-        quads[4] = new Quad(BlockSide.FRONT, new Vector3(0,0,0));
-        quads[5] = new Quad(BlockSide.BACK, new Vector3(0,0,0));
+        quads[0] = new Quad(BlockSide.BOTTOM, new Vector3(0,0,0), blockUVData);
+        quads[1] = new Quad(BlockSide.TOP, new Vector3(0,0,0), blockUVData);
+        quads[2] = new Quad(BlockSide.LEFT, new Vector3(0,0,0), blockUVData);
+        quads[3] = new Quad(BlockSide.RIGHT, new Vector3(0,0,0), blockUVData);
+        quads[4] = new Quad(BlockSide.FRONT, new Vector3(0,0,0), blockUVData);
+        quads[5] = new Quad(BlockSide.BACK, new Vector3(0,0,0), blockUVData);
 
         Mesh[] sideMeshes = new Mesh[6];
         sideMeshes[0] = quads[0].mesh;
