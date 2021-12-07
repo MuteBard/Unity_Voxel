@@ -11,13 +11,13 @@ public static class MeshUtils
     }
 
     public static Vector2[] blockUVs = {
-        /*GRASSTOP*/ new Vector2(4, 15),
+        /*GRASSTOP*/ new Vector2(3, 15),
         /*DIRT*/ new Vector2(2, 15),
         /*STONE*/  new Vector2(1, 15),
         /*GLASS*/ new Vector2(1, 12),
         /*ICE*/ new Vector2(3, 11),
         /*SAND*/ new Vector2(2, 14),
-        /*WATER*/ new Vector2(16, 3)
+        /*WATER*/ new Vector2(15, 3)
     };
 
     public static Vector2 GetblockUVData(BlockType bType){

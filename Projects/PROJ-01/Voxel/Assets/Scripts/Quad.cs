@@ -29,8 +29,8 @@ public class Quad
             throw new System.Exception("uvy is out of bounds");
         }
 
-        // Debug.Log($"{atlusSquareSize * (x + uvx)}, {atlusSquareSize * (y + uvy)}");
-        return new Vector2(atlusSquareSize * (x + uvx), atlusSquareSize * (y + uvy));
+        Debug.Log($"{atlusSquareSize * (x + uvx)}, {atlusSquareSize * (y + uvy)}");
+        return new Vector2((float)(atlusSquareSize * (x + uvx)), (float)(atlusSquareSize * (y + uvy)));
     }
 
     private void setUVs(Vector2 blockUVData){
@@ -41,9 +41,9 @@ public class Quad
 
         uvs = new Vector2[] {
             uv00,
-            uv10,
             uv01,
-            uv11
+            uv11,
+            uv10
         };
     }
 
