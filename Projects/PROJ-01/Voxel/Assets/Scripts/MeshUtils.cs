@@ -7,7 +7,7 @@ public static class MeshUtils
 {
     public enum BlockType
     {
-        GRASSTOP, DIRT, STONE, GLASS, ICE, SAND, WATER,
+        GRASSTOP, DIRT, STONE, GLASS, ICE, SAND, WATER, AIR
     }
         public enum BlockSide {
         BOTTOM,

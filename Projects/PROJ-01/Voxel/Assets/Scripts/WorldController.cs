@@ -35,7 +35,7 @@ public class WorldController : MonoBehaviour
     }
 
     public bool Randomness(){
-        var value = Random.Range(1, 100);
+        var value = UnityEngine.Random.Range(1, 100);
         return value > randomFactor;
     }
 
