@@ -9,6 +9,15 @@ public static class MeshUtils
     {
         GRASSTOP, DIRT, STONE, GLASS, ICE, SAND, WATER,
     }
+        public enum BlockSide {
+        BOTTOM,
+        TOP,
+        LEFT,
+        RIGHT,
+        FRONT,
+        BACK
+    }
+
 
     public static Vector2[] blockUVs = {
         /*GRASSTOP*/ new Vector2(3, 15),
