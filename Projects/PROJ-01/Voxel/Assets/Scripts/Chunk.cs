@@ -8,21 +8,42 @@ using UnityEngine.Rendering;
 
 public class Chunk : MonoBehaviour
 {
+    
+    [Header("Blocks")]
     [SerializeField] Material atlas;
-    [SerializeField] public int width = 2;
-    [SerializeField] public int height = 2;
-    [SerializeField] public int depth = 2;
+    [SerializeField] public int width;
+    [SerializeField] public int height;
+    [SerializeField] public int depth;
     [SerializeField] [Range(0, 100)] int randomFactor = 5;
+
+
+    [Header("Noise")]
+    [SerializeField] [Range(0, 10)] public float aScale = 2f;
+    [SerializeField] [Range(0, 1)] public float fScale = 0.5f;
+    [SerializeField] public int octaves = 1;
+    [SerializeField] public float heightOffset = 1;
     public Block[,,] blocks;
+
+    [Header("BlockType")]
+    [SerializeField] MeshUtils.BlockType blockType;
+
+    public Vector3 location;
+
     //Flat [x + width * (y + depth * z)] = Original[x,y,z]
+    //x = i % width
+    //y = (i / width) % height
+    //z = i / (width * height)
     public MeshUtils.BlockType[] chunkData;
 
     void BuildChunk(){
         int blockCount = width * depth * height;
         chunkData = new MeshUtils.BlockType[blockCount];
         for(int i = 0; i < blockCount; i++){
-            if(Randomness()){
-                chunkData[i] = MeshUtils.BlockType.DIRT;
+            int x = i % width + (int) location.x;
+            int y = (i / width) % height + (int) location.y;
+            int z = i / (width * height) + (int) location.z;
+            if(MeshUtils.fBM(x, z, octaves, fScale, aScale, heightOffset) > y){
+                chunkData[i] = blockType;
             }else{
                 chunkData[i] = MeshUtils.BlockType.AIR;
             }
@@ -33,8 +54,17 @@ public class Chunk : MonoBehaviour
         return value > randomFactor;
     }
 
-    void Start()
+    void Start(){
+
+    }
+    public void CreateChunk(Vector3 dimensions, Vector3 position)
     {
+        location = position;
+        width = (int) dimensions.x;
+        height = (int) dimensions.y;
+        depth = (int) dimensions.z;
+        Debug.Log($"width({width}), height({height}), depth({depth})");
+
         MeshFilter mf = this.gameObject.AddComponent<MeshFilter>();
         MeshRenderer mr = this.gameObject.AddComponent<MeshRenderer>();
         mr.material = atlas;
@@ -53,7 +83,7 @@ public class Chunk : MonoBehaviour
          for(int z = 0; z < depth; z++){
             for(int y = 0; y < height; y++){
                 for(int x = 0; x < width; x++){
-                    blocks[x, y, z] = new Block(new Vector3(x, y, z), chunkData[x + width * (y + depth * z)], this);
+                    blocks[x, y, z] = new Block(new Vector3(x, y, z) + location, chunkData[x + width * (y + depth * z)], this);
                     if(blocks[x, y, z].mesh != null){
                         inputMeshes.Add(blocks[x, y, z].mesh);
                         var vertexCount = blocks[x, y, z].mesh.vertexCount;
@@ -80,7 +110,7 @@ public class Chunk : MonoBehaviour
 
         var handle = jobs.Schedule(inputMeshes.Count, 4);
         var newMesh = new Mesh();
-        newMesh.name = "Chunk";
+        newMesh.name = $"Chunk_{location.x}_{location.y}_{location.z}";
         var sm = new SubMeshDescriptor(0, triStart, MeshTopology.Triangles);
         sm.firstVertex = 0;
         sm.vertexCount = vertexStart;
@@ -98,6 +128,8 @@ public class Chunk : MonoBehaviour
         newMesh.RecalculateBounds();
 
         mf.mesh = newMesh;
+        MeshCollider collider = this.gameObject.AddComponent<MeshCollider>();
+        collider.sharedMesh = mf.mesh;
     }
 
     [BurstCompile]

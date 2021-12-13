@@ -61,6 +61,16 @@ public static class MeshUtils
 
         return blockuv;
     }
+
+    public static float fBM(float x, float z, int octaves, float fScale, float aScale, float heightOffset){
+        float total = 0;
+        float frequency = 1;
+        for(int i = 0; i < octaves; i++){
+            total += Mathf.PerlinNoise(x * fScale * frequency, z * fScale * frequency) * aScale;
+            frequency *= 2;
+        }
+        return total + heightOffset;
+    }
     
     public static Mesh MergeMeshes(Mesh[] meshes){
         

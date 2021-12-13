@@ -10,22 +10,23 @@ public class Block
     public Block(Vector3 offset, MeshUtils.BlockType blockType, Chunk chunk)
     {
         parentChunk = chunk;
+        Vector3 blockLocalPos = offset - chunk.location;
 
         if(blockType == MeshUtils.BlockType.AIR) return;
 
         Vector2 blockUVData = MeshUtils.GetblockUVData(blockType);
         List<Quad> quads = new List<Quad>();
-        if(!HasSolidNeighbor( (int) offset.x, (int) offset.y - 1, (int) offset.z ))
+        if(!HasSolidNeighbor( (int) blockLocalPos.x, (int) blockLocalPos.y - 1, (int) blockLocalPos.z ))
             quads.Add(new Quad(MeshUtils.BlockSide.BOTTOM, offset, blockUVData));
-        if(!HasSolidNeighbor( (int) offset.x, (int) offset.y + 1, (int) offset.z ))
+        if(!HasSolidNeighbor( (int) blockLocalPos.x, (int) blockLocalPos.y + 1, (int) blockLocalPos.z ))
             quads.Add(new Quad(MeshUtils.BlockSide.TOP, offset, blockUVData));
-        if(!HasSolidNeighbor( (int) offset.x - 1, (int) offset.y, (int) offset.z ))
+        if(!HasSolidNeighbor( (int) blockLocalPos.x - 1, (int) blockLocalPos.y, (int) blockLocalPos.z ))
             quads.Add(new Quad(MeshUtils.BlockSide.LEFT, offset, blockUVData));
-        if(!HasSolidNeighbor( (int) offset.x + 1, (int) offset.y, (int) offset.z ))
+        if(!HasSolidNeighbor( (int) blockLocalPos.x + 1, (int) blockLocalPos.y, (int) blockLocalPos.z ))
             quads.Add(new Quad(MeshUtils.BlockSide.RIGHT, offset, blockUVData));
-        if(!HasSolidNeighbor( (int) offset.x, (int) offset.y, (int) offset.z + 1 ))
+        if(!HasSolidNeighbor( (int) blockLocalPos.x, (int) blockLocalPos.y, (int) blockLocalPos.z + 1 ))
             quads.Add( new Quad(MeshUtils.BlockSide.FRONT, offset, blockUVData));
-        if(!HasSolidNeighbor( (int) offset.x, (int) offset.y, (int) offset.z - 1 ))
+        if(!HasSolidNeighbor( (int) blockLocalPos.x, (int) blockLocalPos.y, (int) blockLocalPos.z - 1 ))
             quads.Add(new Quad(MeshUtils.BlockSide.BACK, offset, blockUVData));
 
         if(quads.Count == 0) return;
@@ -39,7 +40,7 @@ public class Block
         }
 
         mesh = MeshUtils.MergeMeshes(sideMeshes);
-        mesh.name = $"Cube_{offset.x}_{offset.y}_{offset.z}";
+        mesh.name = $"Cube_{blockLocalPos.x}_{blockLocalPos.y}_{blockLocalPos.z}";
     }
 
 
