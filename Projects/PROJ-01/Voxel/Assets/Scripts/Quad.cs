@@ -40,10 +40,10 @@ public class Quad
         Vector2 uv11 = getUVFromAtlus((int) blockUVData.x, (int) blockUVData.y, 1, 1);
 
         uvs = new Vector2[] {
-            uv00,
             uv01,
-            uv11,
-            uv10
+            uv11, 
+            uv10,
+            uv00
         };
     }
 

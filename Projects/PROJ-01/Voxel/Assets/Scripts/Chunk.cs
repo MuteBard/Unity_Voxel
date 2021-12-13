@@ -25,10 +25,12 @@ public class Chunk : MonoBehaviour
     public Block[,,] blocks;
 
     [Header("BlockType")]
-    [SerializeField] MeshUtils.BlockType blockType;
+    [SerializeField] MeshUtils.BlockType blockType1;
+    [SerializeField] MeshUtils.BlockType blockType2;
+    [SerializeField] MeshUtils.BlockType blockType3;
+    [SerializeField] MeshUtils.BlockType blockType4;
 
     public Vector3 location;
-
     //Flat [x + width * (y + depth * z)] = Original[x,y,z]
     //x = i % width
     //y = (i / width) % height
@@ -42,8 +44,12 @@ public class Chunk : MonoBehaviour
             int x = i % width + (int) location.x;
             int y = (i / width) % height + (int) location.y;
             int z = i / (width * height) + (int) location.z;
-            if(MeshUtils.fBM(x, z, octaves, fScale, aScale, heightOffset) > y){
-                chunkData[i] = blockType;
+            int surfaceHeight = (int) MeshUtils.fBM(x, z, octaves, fScale, aScale, heightOffset);
+
+            if(surfaceHeight == y){
+                chunkData[i] = blockType1;
+            }else if(y < surfaceHeight){
+                chunkData[i] = blockType2;
             }else{
                 chunkData[i] = MeshUtils.BlockType.AIR;
             }
@@ -63,7 +69,7 @@ public class Chunk : MonoBehaviour
         width = (int) dimensions.x;
         height = (int) dimensions.y;
         depth = (int) dimensions.z;
-        Debug.Log($"width({width}), height({height}), depth({depth})");
+        // Debug.Log($"width({width}), height({height}), depth({depth})");
 
         MeshFilter mf = this.gameObject.AddComponent<MeshFilter>();
         MeshRenderer mr = this.gameObject.AddComponent<MeshRenderer>();

@@ -14,12 +14,20 @@ public class Block
 
         if(blockType == MeshUtils.BlockType.AIR) return;
 
-        Vector2 blockUVData = MeshUtils.GetblockUVData(blockType);
+        Vector2 blockUVData = MeshUtils.GetBlockUVData(blockType);
         List<Quad> quads = new List<Quad>();
-        if(!HasSolidNeighbor( (int) blockLocalPos.x, (int) blockLocalPos.y - 1, (int) blockLocalPos.z ))
-            quads.Add(new Quad(MeshUtils.BlockSide.BOTTOM, offset, blockUVData));
-        if(!HasSolidNeighbor( (int) blockLocalPos.x, (int) blockLocalPos.y + 1, (int) blockLocalPos.z ))
-            quads.Add(new Quad(MeshUtils.BlockSide.TOP, offset, blockUVData));
+        if(!HasSolidNeighbor( (int) blockLocalPos.x, (int) blockLocalPos.y - 1, (int) blockLocalPos.z )){
+            if(blockType == MeshUtils.BlockType.GRASSSIDE)
+                quads.Add(new Quad(MeshUtils.BlockSide.BOTTOM, offset, MeshUtils.GetBlockUVData(MeshUtils.BlockType.DIRT)));
+            else
+                quads.Add(new Quad(MeshUtils.BlockSide.BOTTOM, offset, blockUVData));
+        }
+        if(!HasSolidNeighbor( (int) blockLocalPos.x, (int) blockLocalPos.y + 1, (int) blockLocalPos.z )){
+            if(blockType == MeshUtils.BlockType.GRASSSIDE)
+                quads.Add(new Quad(MeshUtils.BlockSide.TOP, offset, MeshUtils.GetBlockUVData(MeshUtils.BlockType.GRASSTOP)));
+            else
+                quads.Add(new Quad(MeshUtils.BlockSide.TOP, offset, blockUVData));
+        }
         if(!HasSolidNeighbor( (int) blockLocalPos.x - 1, (int) blockLocalPos.y, (int) blockLocalPos.z ))
             quads.Add(new Quad(MeshUtils.BlockSide.LEFT, offset, blockUVData));
         if(!HasSolidNeighbor( (int) blockLocalPos.x + 1, (int) blockLocalPos.y, (int) blockLocalPos.z ))
