@@ -16,12 +16,6 @@ public class Chunk : MonoBehaviour
     [SerializeField] public int depth;
     [SerializeField] [Range(0, 100)] int randomFactor = 5;
 
-
-    [Header("Noise")]
-    [SerializeField] [Range(0, 10)] public float aScale = 2f;
-    [SerializeField] [Range(0, 1)] public float fScale = 0.5f;
-    [SerializeField] public int octaves = 1;
-    [SerializeField] public float heightOffset = 1;
     public Block[,,] blocks;
 
     [Header("BlockType")]
@@ -44,10 +38,21 @@ public class Chunk : MonoBehaviour
             int x = i % width + (int) location.x;
             int y = (i / width) % height + (int) location.y;
             int z = i / (width * height) + (int) location.z;
-            int surfaceHeight = (int) MeshUtils.fBM(x, z, octaves, fScale, aScale, heightOffset);
+            int surfaceHeight = (int) MeshUtils.fBM(x, z, World.surfaceSettings.octaves, World.surfaceSettings.fScale, World.surfaceSettings.aScale, World.surfaceSettings.heightOffset);
+            int stoneHeight = (int) MeshUtils.fBM(x, z, World.stoneSettings.octaves, World.stoneSettings.fScale, World.stoneSettings.aScale, World.stoneSettings.heightOffset);
+            int caveTopHeight = (int) MeshUtils.fBM(x, z, World.caveTopSettings.octaves, World.caveTopSettings.fScale, World.caveTopSettings.aScale, World.caveTopSettings.heightOffset);
+            int caveBottomHeight = (int) MeshUtils.fBM(x, z, World.caveBottomSettings.octaves, World.caveBottomSettings.fScale, World.caveBottomSettings.aScale, World.caveBottomSettings.heightOffset);
+            int urGoldHeight = (int) MeshUtils.fBM(x, z, World.urGoldSettings.octaves, World.urGoldSettings.fScale, World.urGoldSettings.aScale, World.urGoldSettings.heightOffset);
+
 
             if(surfaceHeight == y){
                 chunkData[i] = blockType1;
+            }else if(y < stoneHeight && y > caveBottomHeight - 5 && !(y < caveTopHeight && y > caveBottomHeight) && UnityEngine.Random.Range(0.0f, 1.0f) <= World.urGoldSettings.probability){
+                chunkData[i] = blockType4;
+            }else if(y < caveTopHeight && y > caveBottomHeight){
+                chunkData[i] = MeshUtils.BlockType.AIR;
+            }else if(y < stoneHeight){
+                chunkData[i] = blockType3;
             }else if(y < surfaceHeight){
                 chunkData[i] = blockType2;
             }else{

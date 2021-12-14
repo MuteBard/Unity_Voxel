@@ -1,7 +1,2 @@
-# DEV-15, Adding Layers
-#### Tags: [layers]
-
-Check the github script changes
-
-Video:
-https://www.youtube.com/watch?v=UY6dVYrTIac
+# DEV-15, skip
+#### Tags: [skip]

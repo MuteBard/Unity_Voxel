@@ -3,6 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+public struct PerlinSettings {
+    public float aScale;
+    public float fScale;
+    public int octaves;
+    public float heightOffset;
+    public float probability;
+
+    public PerlinSettings(float aScale, float fScale, int octaves, float heightOffset, float probability){
+        this.aScale = aScale;
+        this.fScale = fScale;
+        this.octaves = octaves;
+        this.heightOffset = heightOffset;
+        this.probability = probability;
+    }
+}
+
 public class World : MonoBehaviour
 {
     public static Vector3 worldDimension = new Vector3(10,10,10);
@@ -11,10 +28,28 @@ public class World : MonoBehaviour
     [SerializeField] GameObject mainCamera;
     [SerializeField] GameObject fpc;
     [SerializeField] Slider loadingBar;
+
+    public static PerlinSettings surfaceSettings;
+    [SerializeField] PerlinGrapher surface;
+    public static PerlinSettings stoneSettings;
+    [SerializeField] PerlinGrapher stone;
+    public static PerlinSettings caveTopSettings;
+    [SerializeField] PerlinGrapher caveTop;
+    public static PerlinSettings caveBottomSettings;
+    [SerializeField] PerlinGrapher caveBottom;
+
+    public static PerlinSettings urGoldSettings;
+    [SerializeField] PerlinGrapher urGold;
+
     
     void Start()
     {
         loadingBar.maxValue = worldDimension.x * worldDimension.y * worldDimension.z;
+        surfaceSettings = new PerlinSettings(surface.aScale, surface.fScale, surface.octaves, surface.heightOffset, surface.probability);
+        stoneSettings = new PerlinSettings(stone.aScale, stone.fScale, stone.octaves, stone.heightOffset, stone.probability);
+        caveTopSettings = new PerlinSettings(caveTop.aScale, caveTop.fScale, caveTop.octaves, caveTop.heightOffset, caveTop.probability);
+        caveBottomSettings = new PerlinSettings(caveBottom.aScale, caveBottom.fScale, caveBottom.octaves, caveBottom.heightOffset, caveBottom.probability);
+        urGoldSettings = new PerlinSettings(urGold.aScale, urGold.fScale, urGold.octaves, urGold.heightOffset, urGold.probability);
         StartCoroutine(BuildWorld());
     }
 
@@ -34,7 +69,7 @@ public class World : MonoBehaviour
         float xpos = (worldDimension.x * chunkDimensions.x) / 2f;
         float zpos = (worldDimension.z * chunkDimensions.z) / 2f;
         Chunk c = chunkPrefab.GetComponent<Chunk>();
-        float ypos = MeshUtils.fBM(xpos, zpos, c.octaves, c.fScale, c.aScale, c.heightOffset) + 10;
+        float ypos = MeshUtils.fBM(xpos, zpos, surfaceSettings.octaves, surfaceSettings.fScale, surfaceSettings.aScale, surfaceSettings.heightOffset) + 10;
         fpc.transform.position = new Vector3(xpos, ypos, zpos);
         loadingBar.gameObject.SetActive(false);
         fpc.SetActive(true);

@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+[ExecuteInEditMode] 
 public class PerlinGrapher : MonoBehaviour
 {
     [SerializeField] int chunkDepth = 11;
-    [SerializeField] float aScale = 2f;
-    [SerializeField] float fScale = 0.5f;
-    [SerializeField] int octaves = 1;
-    [SerializeField] float heightOffset = 1;
+    [SerializeField] [Range(0, 20)] public float aScale = 2f;
+    [SerializeField] [Range(0, 3)] public float fScale = 0.5f;
+    [SerializeField] public int octaves = 1;
+    [SerializeField] public float heightOffset = 1;
+    [SerializeField] [Range(0.0f, 1.0f)] public float probability = 1;
+
     [SerializeField] public LineRenderer lr;
     void Start()
     {

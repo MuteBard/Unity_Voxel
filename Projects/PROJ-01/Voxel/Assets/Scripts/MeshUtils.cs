@@ -7,7 +7,7 @@ public static class MeshUtils
 {
     public enum BlockType
     {
-        GRASSTOP, GRASSSIDE, DIRT, STONE, GLASS, ICE, SAND, WATER, AIR
+        GRASSTOP, GRASSSIDE, DIRT, STONE, GLASS, ICE, SAND, WATER, AIR, UR_GOLD
     }
         public enum BlockSide {
         BOTTOM,
@@ -27,7 +27,8 @@ public static class MeshUtils
         /*GLASS*/ new Vector2(1, 12),
         /*ICE*/ new Vector2(3, 11),
         /*SAND*/ new Vector2(2, 14),
-        /*WATER*/ new Vector2(15, 3)
+        /*WATER*/ new Vector2(15, 3),
+        /*UNREFINED_GOLD*/ new Vector2(0, 13)
     };
 
     public static Vector2 GetBlockUVData(BlockType bType){
@@ -57,6 +58,9 @@ public static class MeshUtils
                 break;
             case BlockType.WATER:
                 blockuv = blockUVs[7];
+                break;
+            case BlockType.UR_GOLD:
+                blockuv = blockUVs[8];
                 break;
             default:
                 blockuv = new Vector2(16, 16);
