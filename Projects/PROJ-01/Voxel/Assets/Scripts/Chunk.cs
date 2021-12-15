@@ -25,7 +25,7 @@ public class Chunk : MonoBehaviour
     [SerializeField] MeshUtils.BlockType blockType4;
 
     public Vector3 location;
-    //Flat [x + width * (y + depth * z)] = Original[x,y,z]
+    //Flat [ * (y + depth * z)] = Original[x,y,z]
     //x = i % width
     //y = (i / width) % height
     //z = i / (width * height)
@@ -43,19 +43,26 @@ public class Chunk : MonoBehaviour
             int caveTopHeight = (int) MeshUtils.fBM(x, z, World.caveTopSettings.octaves, World.caveTopSettings.fScale, World.caveTopSettings.aScale, World.caveTopSettings.heightOffset);
             int caveBottomHeight = (int) MeshUtils.fBM(x, z, World.caveBottomSettings.octaves, World.caveBottomSettings.fScale, World.caveBottomSettings.aScale, World.caveBottomSettings.heightOffset);
             int urGoldHeight = (int) MeshUtils.fBM(x, z, World.urGoldSettings.octaves, World.urGoldSettings.fScale, World.urGoldSettings.aScale, World.urGoldSettings.heightOffset);
+            int cave = (int) MeshUtils.fBM3D(x, y, z, World.caveSettings.octaves, World.caveSettings.fScale, World.caveSettings.aScale, World.caveSettings.heightOffset);
 
 
             if(surfaceHeight == y){
                 chunkData[i] = blockType1;
             }else if(y < stoneHeight && y > caveBottomHeight - 5 && !(y < caveTopHeight && y > caveBottomHeight) && UnityEngine.Random.Range(0.0f, 1.0f) <= World.urGoldSettings.probability){
                 chunkData[i] = blockType4;
-            }else if(y < caveTopHeight && y > caveBottomHeight){
+            }
+            else if(y < caveTopHeight && y > caveBottomHeight){
                 chunkData[i] = MeshUtils.BlockType.AIR;
-            }else if(y < stoneHeight){
+            }
+            else if(y < stoneHeight){
                 chunkData[i] = blockType3;
             }else if(y < surfaceHeight){
                 chunkData[i] = blockType2;
             }else{
+                chunkData[i] = MeshUtils.BlockType.AIR;
+            }
+
+            if(cave < World.caveSettings.probability && y < surfaceHeight - 5){
                 chunkData[i] = MeshUtils.BlockType.AIR;
             }
         }

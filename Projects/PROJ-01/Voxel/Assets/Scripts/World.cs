@@ -22,7 +22,7 @@ public struct PerlinSettings {
 
 public class World : MonoBehaviour
 {
-    public static Vector3 worldDimension = new Vector3(10,10,10);
+    public static Vector3 worldDimension = new Vector3(10,20,10);
     public static Vector3 chunkDimensions = new Vector3(10,10,10);
     [SerializeField] GameObject chunkPrefab;
     [SerializeField] GameObject mainCamera;
@@ -37,9 +37,10 @@ public class World : MonoBehaviour
     [SerializeField] PerlinGrapher caveTop;
     public static PerlinSettings caveBottomSettings;
     [SerializeField] PerlinGrapher caveBottom;
-
     public static PerlinSettings urGoldSettings;
     [SerializeField] PerlinGrapher urGold;
+    public static PerlinSettings caveSettings;
+    [SerializeField] Perlin3DGrapher cave;
 
     
     void Start()
@@ -50,6 +51,7 @@ public class World : MonoBehaviour
         caveTopSettings = new PerlinSettings(caveTop.aScale, caveTop.fScale, caveTop.octaves, caveTop.heightOffset, caveTop.probability);
         caveBottomSettings = new PerlinSettings(caveBottom.aScale, caveBottom.fScale, caveBottom.octaves, caveBottom.heightOffset, caveBottom.probability);
         urGoldSettings = new PerlinSettings(urGold.aScale, urGold.fScale, urGold.octaves, urGold.heightOffset, urGold.probability);
+        caveSettings = new PerlinSettings(cave.aScale, cave.fScale, cave.octaves, cave.heightOffset, cave.DrawCutOff);
         StartCoroutine(BuildWorld());
     }
 
